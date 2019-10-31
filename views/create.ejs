@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <title> Wallet</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h2> Create Wallet</h2>
+    </header>
+    
+    <main class="login">
+      <div class="item">
+        userID
+        <input type="text" id="userID"></br>
+        password
+        <input type="text" id="password">
+      </div>
+
+      <div class="item1">
+        <input type="submit" value="Create" id="getResult"></button>
+      </div>
+    </main>
+    <footer>
+        <button type="button" id="btn2">뒤로가기</button>
+    </footer>
+
+    <script>
+      $('#getResult').click(function () {
+        console.log($('#userID').val())
+        console.log($('#password').val())
+
+        $.ajax({
+          url: 'http://localhost:3000/create',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'id': $('#userID').val(),
+            'password': $('#password').val()
+          },
+          success: function (result, body, {status}) {
+            if(status === 201){
+              window.location.href = `http://localhost:3000/`
+            } else if(status === 200){
+              alert("중복된 아이디가 존재합니다") 
+            }
+          }
+        });
+      })
+
+    
+      $('#btn2').click(function(){
+        window.location.href = "http://localhost:3000/"
+      })
+    </script>
+
+  </div>
+</body>
+
+</html>
