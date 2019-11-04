@@ -10,8 +10,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    let { id, password } = req.body
+    let { id, password, password2 } = req.body
     let newAccount = web3.eth.accounts.create()
+    if(password !== password2){
+        return res.status(202).json({})
+    }
     db.query('INSERT INTO wallet_info(userid, password, public_key, private_key) VALUES(?, ?, ?, ?)',
         [id, password, newAccount.address, newAccount.privateKey], function (err, result) {
             if (err) {

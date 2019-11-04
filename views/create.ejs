@@ -13,19 +13,23 @@
     <header>
       <h2> Create Wallet</h2>
     </header>
+    <section class="content">
+      <nav>
+        <img class="logo" src="images/ether_logo.png">
+      </nav>
+      <main class="mainPage">
+        <div class="context">
+          <div class="item" id="text">userID</div>
+          <div class="item"><input class="input_text" type="text" size="40" id="userID"></div>
+          <div class="item" id="text">Password</div>
+          <div class="item"><input class="input_text" type="password" size="44" id="password" style="font-family:''"></div>
+          <div class="item" id="text">Password 확인</div>
+          <div class="item"><input class="input_text" type="password" size="44" id="password2" style="font-family:''"></div>
+          <div class="div5"><input type="submit" value="Create" id="getResult"></button></div>
+        </div>
+      </main>
+    </section>
     
-    <main class="login">
-      <div class="item">
-        userID
-        <input type="text" id="userID"></br>
-        password
-        <input type="text" id="password">
-      </div>
-
-      <div class="item1">
-        <input type="submit" value="Create" id="getResult"></button>
-      </div>
-    </main>
     <footer>
         <button type="button" id="btn2">뒤로가기</button>
     </footer>
@@ -41,14 +45,24 @@
           type: 'POST',
           data: {
             'id': $('#userID').val(),
-            'password': $('#password').val()
+            'password': $('#password').val(),
+            'password2': $('#password2').val(),
           },
           success: function (result, body, {status}) {
-            if(status === 201){
-              window.location.href = `http://localhost:3000/`
-            } else if(status === 200){
-              alert("중복된 아이디가 존재합니다") 
-            }
+            // if(status === 201){
+            //   window.location.href = `http://localhost:3000/`
+            // } else if(status === 200){
+            //   alert("중복된 아이디가 존재합니다") 
+            // } 
+            const statusMsg = {
+                "200": () => alert('중복된 아이디가 존재합니다.'),
+                "201": () => window.location.href = `http://localhost:3000/`,
+                "202": () => alert('비밀번호를 확인해주세요.')
+              }
+              let msg = statusMsg[`${status}`]
+
+              if (msg) msg()
+            
           }
         });
       })

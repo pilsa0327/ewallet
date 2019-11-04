@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "node ./bin/www",
+    "auto": "supervisor ./bin/www"
   },
   "dependencies": {
     "ejs": "^2.7.1",
+    "ethereumjs-tx": "^2.1.1",
     "express": "~4.16.1",
     "express-mysql-session": "^2.1.0",
     "http-errors": "^1.6.3",

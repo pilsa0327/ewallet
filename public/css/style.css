@@ -14,18 +14,21 @@ body{
   height: 100%;
   align-items: center;
   justify-content: center;
+  
 }
 .container{
   display: flex;
   flex-direction: column;
   width: 550px;
-  border: 1px solid rgb(163, 162, 162);
+  
+  
 }
 header{
   background-color: #34617c;
   border-bottom: 1px solid gray;
   padding : 20px;
   color : white;
+  border-radius: 5px 5px 0 0;
 }
 
 .login{
@@ -50,6 +53,7 @@ header{
 
 .content{
   display: flex;
+  border-right : 1px solid gray;
 }
 .content nav{
   border-right: 1px solid gray;
@@ -69,6 +73,7 @@ header{
   width: 100%;
   
 }
+
 .mainPage .context .item{
   height: 40px;
   
@@ -137,6 +142,7 @@ footer button{
   background-color:#b1d5d6;
   height: 56px;
   padding-right: 15px;
+  border-radius: 0 0 5px 5px;
 }
 
 .logo{
@@ -150,6 +156,7 @@ footer button{
 
 #txns li {
   padding: 2px;
-  width : 100px;
+  width : 370px;
+  overflow:hidden;
   text-overflow: ellipsis;
 }

@@ -6,7 +6,6 @@ const MySQLStore = require('express-mysql-session')(session)
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'));
 
-
 router.use(session({
   key: 'session_cookie_name',
   secret: 'session_cookie_secret',
@@ -26,12 +25,19 @@ router.get('/', async function (req, res, next) {
   if (!is_logined) {
     return res.redirect('/')
   }
-  let getBal = await web3.eth.getBalance(public_key)
-  return res.render('main', { userid, public_key, getBal });
+
+  await web3.eth.getBalance(public_key, function (err, wei) {
+    balance = web3.utils.fromWei(wei, 'ether')
+    return balance
+  })
+  return res.render('main', { userid, public_key, balance });
+
+
 });
 
 router.post('/', function (req, res, next) {
   let { id, password } = req.body
+
   db.query('SELECT * FROM wallet_info where userid = ?', [id], function (err, userInfo) {
     // console.log(userInfo)
     if (userInfo.length && userInfo[0].password === password) {
@@ -48,8 +54,15 @@ router.post('/', function (req, res, next) {
     }
   })
 })
+router.post('/txdb', function (req, res, next) {
+  let { txHash } = req.body
+  console.log(txHash)
+  return res.json({})
 
-router.get('/destroy', function(req, res, next){
+})
+
+
+router.get('/destroy', function (req, res, next) {
   req.session.destroy()
   return res.json({})
 })
