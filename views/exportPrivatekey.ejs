@@ -21,11 +21,15 @@
       </nav>
       <main class="mainPage">
         <div class="context">
-          <div class="item" id="text">userID</div>
-          <div class="item"><input class="input_text" type="text" size="40" id="userID"></div>
-          <div class="item" id="text">Password</div>
-          <div class="item"><input class="input_text" type="password" size="44" id="password" style="font-family:''"></div>
-          <div class="div5"><input type="submit" value="Submit" id="getResult"></button></div>
+          <div class="item dis" id="text">userID</div>
+          <div class="item dis"><input class="input_text" type="text" size="40" id="userID"></div>
+          <div class="item dis" id="text">Password</div>
+          <div class="item dis"><input class="input_text" type="password" size="44" id="password"
+              style="font-family:''"></div>
+          <div class="div5 dis"><input type="submit" value="Submit" id="getResult"></button></div>
+          <div class="hide" id="text">PriavateKey</div>
+          <div class="hide show"></div>
+          <div class="hide"><button id='copy'>Copy</button></div>
         </div>
       </main>
     </section>
@@ -34,6 +38,11 @@
       <button type="button" id="btn2">뒤로가기</button>
     </footer>
     <script>
+      $('#copy').click(function () {
+        let privateKey = $('.show').text()
+        copyToClipboard(privateKey)
+      })
+
       $(document).ready(() => {
         $('#getResult').click(function () {
           $.ajax({
@@ -45,17 +54,18 @@
               'password': $('#password').val(),
             },
             success: function (result, body, { status }) {
-                console.log(result.privatekey)
               if (status === 200) {
                 alert("아이디 및 비밀번호를 다시 확인해주세요.")
-              } else if (status === 201) {
-                alert("ㅎ?")
+              } else if (status === 202) {
+                $('.hide').removeClass('hide');
+                $('.dis').addClass('hide');
+                $('.show').html(result.private_key);
               }
-            
+
             },
             error: function (request, status, error) {
-            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-          }
+              alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
           });
         })
       })
@@ -63,6 +73,16 @@
       $('#btn2').click(function () {
         window.location.href = "http://localhost:3000/main"
       })
+
+      function copyToClipboard(val) {
+        var t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = val;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+      }
+
     </script>
 
   </div>

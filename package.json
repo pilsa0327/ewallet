@@ -7,6 +7,8 @@
     "auto": "supervisor ./bin/www"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "crypto-js": "^3.1.9-1",
     "ejs": "^2.7.1",
     "ethereumjs-tx": "^2.1.1",
     "express": "~4.16.1",
