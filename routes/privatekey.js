@@ -23,6 +23,7 @@ router.use(session({
 
 
 router.get('/', function (req, res, next) {
+    
     return res.render('bringPrivatekey');
 });
 
@@ -45,6 +46,10 @@ router.post('/signup', async function (req, res, next) {
 })
 
 router.get('/export', function (req, res, next) {
+    let { is_logined } = req.session;
+    if (!is_logined) {
+        return res.redirect('/')
+    }
     return res.render('exportPrivatekey')
 })
 

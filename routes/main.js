@@ -65,11 +65,11 @@ router.post('/', function (req, res, next) {
     })
   })
 })
-router.post('/txdb', function (req, res, next) {
+router.post('/txdb', await function (req, res, next) {
   let { txHash } = req.body;
   let { userid } = req.session;
   txHash = txHash.substring(1, 67)
-  db.query('INSERT INTO tx_hash(userid, txhash) VALUES(?, ?)', [userid, txHash], function (err, result) {
+  db.query('INSERT INTO tx_hash(userid, txhash) VALUES(?, ?)', [userid, txHash],  async function (err, result) {
     return res.json({})
   })
 
