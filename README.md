@@ -24,7 +24,7 @@ $ npm run start   // node ./bin/www
 $ npm run auto    // supervisor ./bin/www
 ```
 
-http://localhost:3000/
+`http://localhost:3000/` 접속
 
 ### 2. 기능
 
