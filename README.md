@@ -1,19 +1,21 @@
 # Ewallet
 ### 0. 설치
 
-1)
+- ##### git clone/npm install
 
 ```
-$ git clone https://github.com/pilsa0327/ewallet.git
-$ npm install
+git clone https://github.com/pilsa0327/ewallet.git
+npm install
 ```
 
-`
 
-2) 데이터베이스 설정
 
-- mysql database 및 table 생성 / 세션 확인
-- table 생성시 db.sql 파일 참고
+- #####  데이터베이스 설정
+
+  - mysql database 및 table 생성 / 세션 확인
+
+  - table 생성시 db.sql 파일 참고
+
 
 ### 1. 시작
 
