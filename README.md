@@ -4,8 +4,8 @@
 - ##### git clone/npm install
 
 ```
-git clone https://github.com/pilsa0327/ewallet.git
-npm install
+$ git clone https://github.com/pilsa0327/ewallet.git
+$ npm install
 ```
 
 
