@@ -48,9 +48,9 @@ http://localhost:3000/
 
     ```
     status {
-    	"200": () => alert('중복된 아이디가 존재합니다.'),
+      "200": () => alert('중복된 아이디가 존재합니다.'),
       "201": () => {alert('회원 가입되었습니다'), 
-        			window.location.href = `http://localhost:3000/`},
+        window.location.href = `http://localhost:3000/`},
       "202": () => alert('비밀번호를 확인해주세요.')
     }
     ```
@@ -65,8 +65,8 @@ http://localhost:3000/
 
     ```
     status {
-    	 //중복된 privatekey, id  
-    	 "200": () => alert("계정생성에 실패하셨습니다."),
+      //중복된 privatekey, id
+       "200": () => alert("계정생성에 실패하셨습니다."),
        "202": () => {alert("회원 가입되었습니다."), 
          			 window.location.href = `http://localhost:3000/`}
     }
@@ -92,8 +92,8 @@ http://localhost:3000/
 
     ```
     status {
-    	 "200": () => alert('잔액 부족 혹은 주소가 올바르지 않습니다.'),
-       "201": () => window.location.href = 'http://localhost:3000/main'
+      "200": () => alert('잔액 부족 혹은 주소가 올바르지 않습니다.'),
+      "201": () => window.location.href = 'http://localhost:3000/main'
     }
     ```
 
@@ -109,8 +109,8 @@ http://localhost:3000/
  
     ```
     status {
-    	 "200": () => alert("아이디 및 비밀번호를 다시 확인해주세요.")
-       "201": () => //privatekey 출력
+      "200": () => alert("아이디 및 비밀번호를 다시 확인해주세요.")
+      "201": () => //privatekey 출력
     }
     ```
 
