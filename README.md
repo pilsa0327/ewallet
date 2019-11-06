@@ -106,6 +106,13 @@ http://localhost:3000/
   <img src="./public/images/wallet-jpg/exportPrivatekey2.jpg" width="300px"/>
 
   - Id, password 입력시 privatekey 출력
+ 
+    ```
+    status {
+    	"200": () => alert("아이디 및 비밀번호를 다시 확인해주세요.")
+        "201": () => //privatekey 출력
+    }
+    ```
 
 ### 3. 한계
 
