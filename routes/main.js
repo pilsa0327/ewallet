@@ -1,29 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../databases/db')
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session)
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'));
+let web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'));
+let network = 'Ropsten'
 const bcrypt = require('bcrypt-nodejs');
 const CryptoJS = require('crypto-js');
 
-router.use(session({
-  key: 'session_cookie_name',
-  secret: 'session_cookie_secret',
-  resave: false,
-  saveUninitialized: true,
-  store: new MySQLStore({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'ewallet'
-  })
-}))
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
-  let { userid, public_key, is_logined } = req.session;
+ 
+  if(req.session.web3) {
+    web3 = new Web3(new Web3.providers.HttpProvider(req.session.web3))
+  }
+  if(req.session.network){
+    network = req.session.network
+  }
+  let { userid, public_key, is_logined} = req.session;
   let list = new Array();
   if (!is_logined) {
     return res.redirect('/')
@@ -33,7 +27,8 @@ router.get('/', async function (req, res, next) {
     balance = web3.utils.fromWei(wei, 'ether')
     return balance
   })
-  db.query(`SELECT * FROM tx_hash WHERE userid= ?`, [userid], (err, data) => {
+  let network1 = req.session.network;
+  db.mysql.query(`SELECT * FROM tx_hash WHERE userid=? AND network=?`,[userid, network1], (err, data) => {
     if (err) {
       list = [];
     } else {
@@ -41,14 +36,20 @@ router.get('/', async function (req, res, next) {
         list.push(data[i].txhash);
       }
     }
-    return res.render('main', { userid, public_key, balance, list });
+    return res.render('main', { userid, public_key, balance, list, network });
   })
 });
 
 router.post('/', function (req, res, next) {
   let { id, password } = req.body
 
-  db.query('SELECT * FROM wallet_info where userid = ?', [id], function (err, userInfo) {
+  db.mysql.query('SELECT * FROM wallet_info where userid =?', [id], function (err, userInfo){
+    if(err){
+      return res.status(200).json({})
+    }
+    if(!userInfo.length){
+      return res.status(200).json({})
+    }
      bcrypt.compare(password, userInfo[0].password, (err, value) => {
       if (value === true) {
         req.session.is_logined = true;
@@ -56,6 +57,7 @@ router.post('/', function (req, res, next) {
         req.session.userid = userInfo[0].userid;
         req.session.public_key = userInfo[0].public_key;
         req.session.private_key = userInfo[0].private_key;
+        req.session.network = 'Ropsten'
         req.session.save(function () {
           return res.status(201).json({})
         })
@@ -67,9 +69,12 @@ router.post('/', function (req, res, next) {
 })
 router.post('/txdb', async function (req, res, next) {
   let { txHash } = req.body;
-  let { userid } = req.session;
+  let { userid, network } = req.session;
+  
   txHash = txHash.substring(1, 67)
-  db.query('INSERT INTO tx_hash(userid, txhash) VALUES(?, ?)', [userid, txHash],  await function (err, result) {
+  console.log(req.session)
+  console.log(txHash)
+  db.mysql.query('INSERT INTO tx_hash(userid, network, txhash ) VALUES(?, ?, ?)', [userid, network, txHash],  await function (err, result) {
     return res.json({})
   })
 
@@ -79,6 +84,50 @@ router.post('/txdb', async function (req, res, next) {
 router.get('/destroy', function (req, res, next) {
   req.session.destroy()
   return res.json({})
+})
+
+router.post('/changeNetwork', async function (req, res) {
+  let network = req.body.network;
+
+  if (network === 'MainNet') {
+      web3 = 'https://mainnet.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'
+      req.session.web3 = web3
+      req.session.network = network;
+      req.session.save(function () { })
+      return res.json({});
+  }
+
+  else if (network === 'Kovan') {
+      web3 = 'https://kovan.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'
+      req.session.web3 = web3
+      req.session.network = network;
+      req.session.save(function () { })
+      return res.json({});
+  }
+
+  else if (network === 'Rinkeby') {
+      web3 = 'https://rinkeby.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'
+      req.session.web3 = web3
+      req.session.network = network;
+      req.session.save(function () { })
+      return res.json({});
+  }
+
+  else if (network === 'Goerli') {
+      web3 = 'https://goerli.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'
+      req.session.web3 = web3
+      req.session.network = network;
+      req.session.save(function () { })
+      return res.json({})
+  }
+
+  else if (network === 'Ropsten') {
+      web3 = 'https://ropsten.infura.io/v3/25c7c08910c04b0c9be79c09f559652e'
+      req.session.web3 = web3
+      req.session.network = network;
+      req.session.save(function () { })
+      return res.json({})
+  }
 })
 
 

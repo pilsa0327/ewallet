@@ -10,6 +10,7 @@ CREATE TABLE `wallet_info` (
 CREATE TABLE `tx_hash`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` varchar(100) NOT NULL,
+  `network` varchar(255) NOT NULL,
   `txhash` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 );
